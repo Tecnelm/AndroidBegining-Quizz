@@ -1,6 +1,7 @@
 package ovh.garrigues.application;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -85,5 +86,19 @@ public class MainActivity extends AppCompatActivity {
             mEdit.setText("");
             mText.setText(last_player.toString());
         }
+    }
+    private void saveData(String ID,Object obj)
+    {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor= preferences.edit();
+        editor.putString(ID,gson.toJson(obj));
+        editor.apply();
+    }
+    private Object getDataSave(String ID,Class objectClass)
+    {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        Object obj = gson.fromJson(preferences.getString(ID,null),objectClass);
+
+        return obj;
     }
 }
