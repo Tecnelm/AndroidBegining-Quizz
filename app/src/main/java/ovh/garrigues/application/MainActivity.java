@@ -1,10 +1,14 @@
 package ovh.garrigues.application;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -23,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mButton;
     private EditText mEdit;
     private TableLayout mTableLayout;
+    private Context cont = this;
     private ArrayList<Player> players_list = new ArrayList<>();
     private Gson gson = new Gson();
     public static final int QUIZ_ACTIVITY_REQUEST_Code = 42;
@@ -30,19 +36,14 @@ public class MainActivity extends AppCompatActivity {
     public static final String PLAYER_STRING = "OBJECT_PLAYER_GSON";
     private static String SAVE_DATA_LIST_KEY = "DATA_LIST_PLAYER";
     private static Player last_player;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        onstart();
         action();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Player [] p = (Player[]) players_list.toArray();
-        saveData(SAVE_DATA_LIST_KEY,p,true);
+        onstart();
     }
 
     private void action()
@@ -94,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
         if (QUIZ_ACTIVITY_REQUEST_Code == requestCode && RESULT_OK == resultCode) {
             last_player =gson.fromJson(data.getStringExtra(PLAYER_STRING),Player.class);
             addPlayer(last_player);
+            Player [] p =players_list.toArray(new Player[players_list.size()]);
+            saveData(SAVE_DATA_LIST_KEY,p,true);
             mEdit.setText("");
             mText.setText(last_player.toString());
         }
@@ -117,10 +120,36 @@ public class MainActivity extends AppCompatActivity {
     private void onstart()
     {
         Player[] players= (Player[])getDataSave(SAVE_DATA_LIST_KEY,Player[].class );
-        for (Player p :players)
-        {
-            addPlayer(p);
+        if (players!= null) {
+
+
+            for (Player p : players) {
+                addPlayer(p);
+            }
         }
     }
 
+
+    public void resetScore(View view) {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        final SharedPreferences.Editor editor= preferences.edit();
+        new AlertDialog.Builder(cont).setTitle("Reset Tabble Score").setMessage("êtes vous sûr de vouloir reset le tableau de score")
+                .setPositiveButton("oui", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        players_list.clear();
+                        editor.remove(SAVE_DATA_LIST_KEY);
+                        editor.apply();
+                        mTableLayout.removeAllViews();
+                        Toast.makeText(cont,"Score reset",Toast.LENGTH_SHORT);
+                    }
+                })
+                .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
+
+    }
 }

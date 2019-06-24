@@ -63,7 +63,7 @@ public class DynamicView {
         Name.setBackgroundColor(mContext.getColor(R.color.colorScroll));
 
 
-        Name.setBackground(border);
+       // Name.setBackground(border);
 
 
        Score.setTextSize(20);
@@ -71,7 +71,7 @@ public class DynamicView {
        Score.setGravity(Gravity.CENTER);
        Score.setText(""+p.getScore());
        Score.setBackgroundColor(mContext.getColor(R.color.colorScroll));
-        Score.setBackground(border);
+        //Score.setBackground(border);
        row.addView(Name);
        row.addView(Score);
        lay.addView(row);

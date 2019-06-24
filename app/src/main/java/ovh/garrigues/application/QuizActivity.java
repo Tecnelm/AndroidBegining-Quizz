@@ -133,7 +133,8 @@ public class QuizActivity extends AppCompatActivity  {
                         setResult(RESULT_OK,intent);
                         finish();
                     }
-                }).create().show();
+                }).setCancelable(false).create().show();
+
 
 
     }
