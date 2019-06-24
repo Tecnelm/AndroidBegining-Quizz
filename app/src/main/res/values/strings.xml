@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">testApplication</string>
+    <string name="question1"> To Be Or Not To BE ? \n That the question</string>
+    <string name="answer1">answer1</string>
+    <string name="answer2">answer2</string>
+    <string name="answer3">answer3</string>
+    <string name="answer4">answer4</string>
+</resources>
