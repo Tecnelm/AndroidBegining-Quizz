@@ -3,6 +3,7 @@ package ovh.garrigues.application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -27,13 +28,23 @@ public class MainActivity extends AppCompatActivity {
     public static final int QUIZ_ACTIVITY_REQUEST_Code = 42;
     public static final int QUIZ_ACTIVITY_SEND_Code = 43;
     public static final String PLAYER_STRING = "OBJECT_PLAYER_GSON";
+    private static String SAVE_DATA_LIST_KEY = "DATA_LIST_PLAYER";
     private static Player last_player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        onstart();
         action();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Player [] p = (Player[]) players_list.toArray();
+        saveData(SAVE_DATA_LIST_KEY,p,true);
+    }
+
     private void action()
     {
         mText = findViewById(R.id.T1);
@@ -87,10 +98,12 @@ public class MainActivity extends AppCompatActivity {
             mText.setText(last_player.toString());
         }
     }
-    private void saveData(String ID,Object obj)
+    private void saveData(String ID,Object obj,Boolean reset)
     {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor= preferences.edit();
+        if(reset)
+            editor.remove(ID);
         editor.putString(ID,gson.toJson(obj));
         editor.apply();
     }
@@ -101,4 +114,13 @@ public class MainActivity extends AppCompatActivity {
 
         return obj;
     }
+    private void onstart()
+    {
+        Player[] players= (Player[])getDataSave(SAVE_DATA_LIST_KEY,Player[].class );
+        for (Player p :players)
+        {
+            addPlayer(p);
+        }
+    }
+
 }
