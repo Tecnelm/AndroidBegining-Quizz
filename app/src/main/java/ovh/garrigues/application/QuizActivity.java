@@ -54,10 +54,19 @@ public class QuizActivity extends AppCompatActivity  {
                 }
             });
         }
-        question_list.add(new Question("Question 1",2,Question_array.answerA));
-        question_list.add(new Question("Question 2",3,Question_array.answerB));
-        question_list.add(new Question("Question 3",2,Question_array.answerC));
+        getQuestion();
         nextQuestion();
+    }
+
+    private void getQuestion() {
+        //question_list.add(new Question("Question 1",2,Question_array.answerA));
+        //question_list.add(new Question("Question 2",3,Question_array.answerB));
+        //question_list.add(new Question("Question 3",2,Question_array.answerC));
+        //Question[] dataget;
+        question_list = Request.getInstance().getQuestion();
+        Request.getInstance().resetQuestion();
+
+
     }
     private boolean check_Answer(int numButton,int number_question)
     {

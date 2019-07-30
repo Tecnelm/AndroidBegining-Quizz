@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,19 +29,27 @@ public class MainActivity extends AppCompatActivity {
     private Button mButton;
     private EditText mEdit;
     private TableLayout mTableLayout;
+    private ProgressBar mProgressBar;
     private Context cont = this;
     private ArrayList<Player> players_list = new ArrayList<>();
     private Gson gson = new Gson();
+
+
+
+    private static MainActivity instance;
     public static final int QUIZ_ACTIVITY_REQUEST_Code = 42;
     public static final int QUIZ_ACTIVITY_SEND_Code = 43;
     public static final String PLAYER_STRING = "OBJECT_PLAYER_GSON";
     private static String SAVE_DATA_LIST_KEY = "DATA_LIST_PLAYER";
     private static Player last_player;
 
-
+    public static MainActivity getInstance() {
+        return instance;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         setContentView(R.layout.activity_main);
         action();
         onstart();
@@ -52,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mButton = findViewById(R.id.B1);
         mEdit = findViewById(R.id.E1);
         mTableLayout = findViewById(R.id.Main_Activity_TabbleLayout);
+        mProgressBar = findViewById(R.id.progressBar);
 
         mButton.setEnabled(false);
 
@@ -74,14 +84,26 @@ public class MainActivity extends AppCompatActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-               Player p = new Player(mEdit.getText().toString());
-               Intent gameActivity = new Intent(MainActivity.this,QuizActivity.class);
-               gameActivity.putExtra(PLAYER_STRING,gson.toJson(p));
-               startActivityForResult(gameActivity,QUIZ_ACTIVITY_REQUEST_Code);
+               mProgressBar.animate();
+               mProgressBar.setVisibility(View.VISIBLE);
+               new Request(getApplicationContext(),VolleySingleton.getInstance(getApplicationContext()).getRequestQueue());
 
             }
         });
+    }
+    public void changeActiSucess()
+    {
+        Player p = new Player(mEdit.getText().toString());
+        Intent gameActivity = new Intent(MainActivity.this,QuizActivity.class);
+        gameActivity.putExtra(PLAYER_STRING,gson.toJson(p));
+        mProgressBar.setVisibility(View.GONE);
+        startActivityForResult(gameActivity,QUIZ_ACTIVITY_REQUEST_Code);
+
+    }
+    public void changeActiError()
+    {
+        mProgressBar.setVisibility(View.GONE);
+        Toast.makeText(this,"Error getting Question",Toast.LENGTH_LONG);
     }
     private void addPlayer(Player p)
     {

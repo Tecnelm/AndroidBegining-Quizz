@@ -7,19 +7,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.gson.annotations.Expose;
+
 public class Question
 {
     private String question;
     private int numberAnswer;// between 0.3
     private String answerStr[];
-    private boolean error;
+
+    private transient boolean error = false;
 
     public Question(String question , int answer, String []answerStr)
     {
         this.question = question;
         this.numberAnswer = answer-1;
         this.answerStr = answerStr;
-        error = false;
         if(numberAnswer >= answerStr.length ||numberAnswer <0)
         {
             for(int i =0 ; i < answerStr.length ;i++)
