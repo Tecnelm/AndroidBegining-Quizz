@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                mProgressBar.animate();
                mProgressBar.setVisibility(View.VISIBLE);
-               new Request(getApplicationContext(),VolleySingleton.getInstance(getApplicationContext()).getRequestQueue());
+               new Request(getApplicationContext(),VolleySingleton.getInstance(getApplicationContext()).getRequestQueue()).getQuestionArray();
 
             }
         });
