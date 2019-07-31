@@ -11,6 +11,7 @@ import com.google.gson.annotations.Expose;
 
 public class Question
 {
+
     private String question;
     private int numberAnswer;// between 0.3
     private String answerStr[];
@@ -28,7 +29,7 @@ public class Question
             {
                 answerStr[i] = "ERROR";
             }
-            numberAnswer = 0;
+            numberAnswer = 1;
             this.question = "ERROR";
             error = true;
         }
@@ -44,7 +45,7 @@ public class Question
     }
     public int getNumberAnswer()
     {
-        return numberAnswer;
+        return numberAnswer -1;
     }
 
     public String[] getAnswerStr() {

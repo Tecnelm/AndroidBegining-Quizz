@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     public void changeActiError()
     {
         mProgressBar.setVisibility(View.GONE);
-        Toast.makeText(this,"Error getting Question",Toast.LENGTH_LONG);
+        Toast.makeText(getApplicationContext(),"Error getting Question",Toast.LENGTH_SHORT).show();
     }
     private void addPlayer(Player p)
     {
