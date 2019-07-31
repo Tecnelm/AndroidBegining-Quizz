@@ -11,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -65,21 +67,33 @@ public class MainActivity extends AppCompatActivity {
 
         mButton.setEnabled(false);
 
+        mEdit.setFilters(new InputFilter[]{
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                        String str =null;
+                        if (String.valueOf(source).equals("\n")) {
+                            str = "";
+                        }return str;
+                    }
+                }
+        });
         mEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
 
+            }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mButton.setEnabled(s.toString().length() != 0);
+                mButton.setEnabled(String.valueOf(s).length() != 0);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
             }
+
         });
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
