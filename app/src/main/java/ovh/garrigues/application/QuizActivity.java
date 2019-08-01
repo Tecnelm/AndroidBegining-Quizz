@@ -16,11 +16,11 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 
-public class QuizActivity extends AppCompatActivity  {
+public class QuizActivity extends AppCompatActivity {
     private TextView mTexview;
-    private ArrayList<Button> mButton_list =  new ArrayList<>();
+    private ArrayList<Button> mButton_list = new ArrayList<>();
     private ArrayList<Question> question_list = new ArrayList<>();
-    private LinearLayout mLinearLayout ;
+    private LinearLayout mLinearLayout;
     private int num_Question = -1;
     private boolean question_end = false;
     private int numberCorrectAnswer = 0;
@@ -31,23 +31,21 @@ public class QuizActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        player = gson.fromJson(getIntent().getStringExtra(MainActivity.PLAYER_STRING),Player.class);
+        player = gson.fromJson(getIntent().getStringExtra(MainActivity.PLAYER_STRING), Player.class);
         start();
     }
 
-    private void start()
-    {
+    private void start() {
         mTexview = findViewById(R.id.quizTextView_1);
-        mButton_list.add((Button)findViewById(R.id.quizButton_1));
-        mButton_list.add((Button)findViewById(R.id.quizButton_2));
-        mButton_list.add((Button)findViewById(R.id.quizButton_3));
-        mButton_list.add((Button)findViewById(R.id.quizButton_4));
+        mButton_list.add((Button) findViewById(R.id.quizButton_1));
+        mButton_list.add((Button) findViewById(R.id.quizButton_2));
+        mButton_list.add((Button) findViewById(R.id.quizButton_3));
+        mButton_list.add((Button) findViewById(R.id.quizButton_4));
         mLinearLayout = findViewById(R.id.quizLinearLayout);
 
-        for (int i =0 ; i< mButton_list.size(); i++)
-        {
-           final Button b = mButton_list.get(i);
-            b.setOnClickListener(new View.OnClickListener(){
+        for (int i = 0; i < mButton_list.size(); i++) {
+            final Button b = mButton_list.get(i);
+            b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     clickMethode(b);
@@ -55,28 +53,27 @@ public class QuizActivity extends AppCompatActivity  {
             });
         }
         getQuestion();
-        nextQuestion();
+        if (question_list != null)
+            nextQuestion();
     }
 
     private void getQuestion() {
-        //question_list.add(new Question("Question 1",2,Question_array.answerA));
-        //question_list.add(new Question("Question 2",3,Question_array.answerB));
-        //question_list.add(new Question("Question 3",2,Question_array.answerC));
-        //Question[] dataget;
+
+
         question_list = Request.getInstance().getQuestion();
         Request.getInstance().resetQuestion();
-
+        if (question_list == null)
+            finish();
 
     }
-    private boolean check_Answer(int numButton,int number_question)
-    {
-        return numButton == question_list.get(number_question).getNumberAnswer() ;
+
+    private boolean check_Answer(int numButton, int number_question) {
+        return numButton == question_list.get(number_question).getNumberAnswer();
     }
-    private void nextQuestion()
-    {
+
+    private void nextQuestion() {
         num_Question++;
-        if (num_Question < question_list.size() )
-        {
+        if (num_Question < question_list.size()) {
             Question question = question_list.get(num_Question);
             if (!question.isError()) {
 
@@ -116,64 +113,57 @@ public class QuizActivity extends AppCompatActivity  {
                 for (int i = 0; i < mButton_list.size(); i++) {
                     mButton_list.get(i).setText(answerQuestion[i]);
                 }
-            }
-            else{
+            } else {
                 nextQuestion();
             }
-        }
-        else
-        {
+        } else {
             end_question();
         }
         question_end = false;
 
     }
-    private void end_question()
-    {
+
+    private void end_question() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Good Job!")
-                .setMessage("Your score is : "+numberCorrectAnswer)
+                .setMessage("Your score is : " + numberCorrectAnswer)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent();
                         player.setScore(numberCorrectAnswer);
-                        intent.putExtra(MainActivity.PLAYER_STRING,gson.toJson(player));
-                        setResult(RESULT_OK,intent);
+                        intent.putExtra(MainActivity.PLAYER_STRING, gson.toJson(player));
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 }).setCancelable(false).create().show();
 
 
-
     }
 
-   private void clickMethode(Button b)
-   {
-       if (!question_end) {
+    private void clickMethode(Button b) {
+        if (!question_end) {
 
-           if (check_Answer(mButton_list.indexOf(b), num_Question)) {
-               b.setBackgroundColor(getColor(R.color.colorCorrectAnswer));
-               numberCorrectAnswer++;
+            if (check_Answer(mButton_list.indexOf(b), num_Question)) {
+                b.setBackgroundColor(getColor(R.color.colorCorrectAnswer));
+                numberCorrectAnswer++;
 
-           } else {
-               b.setBackgroundColor(getColor(R.color.colorWrongAnswer));
-               mButton_list.get(question_list.get(num_Question).getNumberAnswer()).setBackgroundColor(getColor(R.color.colorCorrectAnswer));
-           }
-           question_end = true;
-       }
-       else
-       {
-           nextQuestion();
-       }
-   }
+            } else {
+                b.setBackgroundColor(getColor(R.color.colorWrongAnswer));
+                mButton_list.get(question_list.get(num_Question).getNumberAnswer()).setBackgroundColor(getColor(R.color.colorCorrectAnswer));
+            }
+            question_end = true;
+        } else {
+            nextQuestion();
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (MainActivity.QUIZ_ACTIVITY_SEND_Code == requestCode && RESULT_OK == resultCode) {
             // Fetch the score from the Intent
 
-            player =gson.fromJson(data.getStringExtra(MainActivity.PLAYER_STRING),Player.class);
+            player = gson.fromJson(data.getStringExtra(MainActivity.PLAYER_STRING), Player.class);
         }
     }
 }
