@@ -65,6 +65,20 @@ public class MainActivity extends AppCompatActivity {
     private void startmenu() {
         final PopupMenu pop = new PopupMenu(this, findViewById(R.id.action_dropdown));
         pop.getMenuInflater().inflate(R.menu.popup_menu, pop.getMenu());
+        pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.action_admin:
+                        Intent intent = new Intent(MainActivity.this,AdminActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+                return false;
+
+            }
+        });
 
         pop.show();
     }

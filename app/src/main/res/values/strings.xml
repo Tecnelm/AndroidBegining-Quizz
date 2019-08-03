@@ -7,5 +7,6 @@
     <string name="answer4">answer4</string>
     <string name="Administration">Administration</string>
     <string name="title_activity_admin">adminActivity</string>
+    <string name="Admin_add">Ajouter</string>
 
 </resources>
