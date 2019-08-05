@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/adminViewRefresh"
+        android:title="@string/AdminviewRefresh"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_admin_refresh"
+        />
+    <item
         android:id="@+id/admin_add_menu"
         android:title="@string/Admin_add"
         app:showAsAction="always"
         android:icon="@drawable/ic_admin_add"
         />
+
 </menu>

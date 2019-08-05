@@ -12,13 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CreateQuestionActivity"></activity>
-        <activity android:name=".AdminActivity" />
+        <activity android:name=".adapter.Question_Admin_lay"></activity>
+        <activity android:name=".view.CreateQuestionActivity" />
+        <activity android:name=".view.AdminActivity" />
         <activity
-            android:name=".QuizActivity"
+            android:name=".view.QuizActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

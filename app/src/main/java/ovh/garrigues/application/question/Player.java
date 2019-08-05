@@ -1,4 +1,4 @@
-package ovh.garrigues.application;
+package ovh.garrigues.application.question;
 
 public class Player {
     private String name;

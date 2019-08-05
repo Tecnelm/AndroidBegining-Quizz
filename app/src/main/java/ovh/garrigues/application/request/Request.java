@@ -1,5 +1,6 @@
-package ovh.garrigues.application;
+package ovh.garrigues.application.request;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.android.volley.RequestQueue;
@@ -12,6 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import ovh.garrigues.application.question.Question;
+import ovh.garrigues.application.view.MainActivity;
 
 public class Request {
 
@@ -31,8 +35,8 @@ public class Request {
         return instance;
     }
 
-    public void getQuestionArray() {
-
+    public void getQuestionArray(Context ac) {
+        final Context act = ac;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -52,14 +56,14 @@ public class Request {
                 }
 
                 if (questiontab.size() == 0)
-                    MainActivity.getInstance().changeActiError();
+                    ((MainActivity)act).changeActiError();
                 else
-                    MainActivity.getInstance().changeActiSucess();
+                    ((MainActivity)act).getInstance().changeActiSucess();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MainActivity.getInstance().changeActiError();
+                ((MainActivity)act).getInstance().changeActiError();
             }
         });
         requestQueue.add(jsonArrayRequest);

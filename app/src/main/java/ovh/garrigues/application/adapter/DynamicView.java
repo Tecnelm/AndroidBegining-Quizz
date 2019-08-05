@@ -1,4 +1,4 @@
-package ovh.garrigues.application;
+package ovh.garrigues.application.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import ovh.garrigues.application.R;
+import ovh.garrigues.application.question.Player;
 
 public class DynamicView {
     private Context mContext ;
@@ -41,7 +44,7 @@ public class DynamicView {
         b.setLayoutParams(params);
         return b;
     }
-    public void createScoreTabble(TableLayout lay,Player p)
+    public void createScoreTabble(TableLayout lay, Player p)
     {
         TableRow row = new TableRow(mContext);
         TextView Name = new TextView(mContext);

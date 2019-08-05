@@ -8,5 +8,6 @@
     <string name="Administration">Administration</string>
     <string name="title_activity_admin">adminActivity</string>
     <string name="Admin_add">Ajouter</string>
+    <string name="AdminviewRefresh">refresh</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package ovh.garrigues.application;
+package ovh.garrigues.application.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +14,12 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+
+import ovh.garrigues.application.adapter.DynamicView;
+import ovh.garrigues.application.question.Player;
+import ovh.garrigues.application.question.Question;
+import ovh.garrigues.application.R;
+import ovh.garrigues.application.request.Request;
 
 
 public class QuizActivity extends AppCompatActivity {

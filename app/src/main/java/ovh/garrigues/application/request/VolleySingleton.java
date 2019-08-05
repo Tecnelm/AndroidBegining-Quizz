@@ -1,4 +1,4 @@
-package ovh.garrigues.application;
+package ovh.garrigues.application.request;
 
 import android.content.Context;
 import android.graphics.Bitmap;

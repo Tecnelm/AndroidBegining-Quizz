@@ -1,5 +1,6 @@
-package ovh.garrigues.application;
+package ovh.garrigues.application.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,9 +13,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +28,13 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import ovh.garrigues.application.adapter.DynamicView;
+import ovh.garrigues.application.question.Player;
+import ovh.garrigues.application.R;
+import ovh.garrigues.application.request.Request;
+import ovh.garrigues.application.request.VolleySingleton;
+
+public class MainActivity extends AppCompatActivity implements activityInterface {
     private TextView mText;
     private Button mButton;
     private EditText mEdit;
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Gson gson = new Gson();
 
 
-    private static MainActivity instance;
+    private static MainActivity  instance;
     public static final int QUIZ_ACTIVITY_REQUEST_Code = 42;
     public static final int QUIZ_ACTIVITY_SEND_Code = 43;
     public static final String PLAYER_STRING = "OBJECT_PLAYER_GSON";
@@ -48,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private static Player last_player;
 
 
-    public static MainActivity getInstance() {
+    public static  MainActivity getInstance() {
         return instance;
     }
 
@@ -71,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId())
                 {
                     case R.id.action_admin:
-                        Intent intent = new Intent(MainActivity.this,AdminActivity.class);
+                        Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -145,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mProgressBar.animate();
                 mProgressBar.setVisibility(View.VISIBLE);
-                new Request(getApplicationContext(), VolleySingleton.getInstance(getApplicationContext()).getRequestQueue()).getQuestionArray();
+                new Request(getApplicationContext(), VolleySingleton.getInstance(getApplicationContext()).getRequestQueue()).getQuestionArray(getInstance());
 
             }
         });
