@@ -5,26 +5,33 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ovh.garrigues.application.R;
+import ovh.garrigues.application.adapter.QuestionAdminAdapter;
+import ovh.garrigues.application.adapter.activityRequest;
 import ovh.garrigues.application.question.Player;
 import ovh.garrigues.application.question.Question;
 import ovh.garrigues.application.request.Request;
 import ovh.garrigues.application.request.VolleySingleton;
 
-public class AdminActivity extends AppCompatActivity implements activityInterface {
+public class AdminActivity extends activityRequest {
 
+    private AdminActivity instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        instance = this;
         refresh();
+
 
     }
 
@@ -67,13 +74,21 @@ public class AdminActivity extends AppCompatActivity implements activityInterfac
     }
 
     private void refresh() {
-        new Request(this, VolleySingleton.getInstance(this).getRequestQueue());
+        new Request(this, VolleySingleton.getInstance(this).getRequestQueue()).getQuestionArray(this);
     }
 
     @Override
     public void changeActiSucess() {
         ArrayList<Question> questionlist = Request.getInstance().getQuestion();
+        ListView view = this.findViewById(R.id.recyclerAdmin);
+        QuestionAdminAdapter questionAdminAdapter = new QuestionAdminAdapter(this,questionlist);
+        view.setAdapter(questionAdminAdapter);
 
+    }
+
+    @Override
+    public activityRequest getInstance() {
+        return instance;
     }
 
     @Override

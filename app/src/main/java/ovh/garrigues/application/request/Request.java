@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ovh.garrigues.application.adapter.activityRequest;
 import ovh.garrigues.application.question.Question;
 import ovh.garrigues.application.view.MainActivity;
 
@@ -32,11 +33,13 @@ public class Request {
     }
 
     public static synchronized Request getInstance() {
+
+
         return instance;
     }
 
-    public void getQuestionArray(Context ac) {
-        final Context act = ac;
+    public void getQuestionArray(activityRequest ac) {
+        final activityRequest act = ac;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -56,14 +59,14 @@ public class Request {
                 }
 
                 if (questiontab.size() == 0)
-                    ((MainActivity)act).changeActiError();
+                    act.changeActiError();
                 else
-                    ((MainActivity)act).getInstance().changeActiSucess();
+                    act.getInstance().changeActiSucess();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ((MainActivity)act).getInstance().changeActiError();
+                act.getInstance().changeActiError();
             }
         });
         requestQueue.add(jsonArrayRequest);

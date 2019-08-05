@@ -41,29 +41,26 @@ public class QuestionAdminAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
-        if (convertView == null)
-        {
+        if (convertView == null) {
             holder = new ViewHolder();
-             convertView =  inflater.inflate(R.layout.layout_list_question,null);
-             holder.textanswer = convertView.findViewById(R.id.correctanswerText);
-             holder.textnumberAnwer = convertView.findViewById(R.id.numberAnswertext);
-             holder.textQuestion = convertView.findViewById(R.id.questionTagText);
-        }
-        else
-        {
-            holder =(ViewHolder) convertView.getTag();
+            convertView = inflater.inflate(R.layout.layout_list_question, null);
+            holder.textanswer = convertView.findViewById(R.id.correctanswerText);
+            holder.textnumberAnwer = convertView.findViewById(R.id.numberAnswertext);
+            holder.textQuestion = convertView.findViewById(R.id.questionTagText);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         Question q = question_list.get(position);
         holder.textQuestion.setText(q.getQuestion());
-        holder.textanswer.setText(q.getNumberAnswer());
-        holder.textnumberAnwer.setText(q.getAnswerStr().length);
-
+        holder.textanswer.setText(String.valueOf(q.getNumberAnswer()));
+        holder.textnumberAnwer.setText(String.valueOf(q.getAnswerStr().length));
 
 
         return convertView;
     }
-    private class ViewHolder{
+
+    private class ViewHolder {
         TextView textQuestion;
         TextView textanswer;
         TextView textnumberAnwer;

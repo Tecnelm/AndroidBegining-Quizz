@@ -29,12 +29,13 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import ovh.garrigues.application.adapter.DynamicView;
+import ovh.garrigues.application.adapter.activityRequest;
 import ovh.garrigues.application.question.Player;
 import ovh.garrigues.application.R;
 import ovh.garrigues.application.request.Request;
 import ovh.garrigues.application.request.VolleySingleton;
 
-public class MainActivity extends AppCompatActivity implements activityInterface {
+public class MainActivity extends activityRequest {
     private TextView mText;
     private Button mButton;
     private EditText mEdit;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements activityInterface
     private static Player last_player;
 
 
-    public static  MainActivity getInstance() {
+    public MainActivity getInstance() {
         return instance;
     }
 
