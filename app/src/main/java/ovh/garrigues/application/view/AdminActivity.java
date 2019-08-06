@@ -1,17 +1,25 @@
 package ovh.garrigues.application.view;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import ovh.garrigues.application.R;
@@ -83,6 +91,38 @@ public class AdminActivity extends activityRequest {
         ListView view = this.findViewById(R.id.recyclerAdmin);
         QuestionAdminAdapter questionAdminAdapter = new QuestionAdminAdapter(this,questionlist);
         view.setAdapter(questionAdminAdapter);
+
+        view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //Question questionClick = (Question) ((QuestionAdminAdapter)parent.getAdapter()).getItem(position);
+                PopupMenu popup = new PopupMenu(getApplicationContext(), view);
+
+                /*  The below code in try catch is responsible to display icons*/
+                try {
+                    Field[] fields = popup.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        if ("mPopup".equals(field.getName())) {
+                            field.setAccessible(true);
+                            Object menuPopupHelper = field.get(popup);
+                            Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                            Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                            setForceIcons.invoke(menuPopupHelper, true);
+                            popup.getMenuInflater().inflate(R.menu.pop_admin_ask_action,popup.getMenu());
+                            popup.show();
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+                return false;
+            }
+        });
+
 
     }
 
