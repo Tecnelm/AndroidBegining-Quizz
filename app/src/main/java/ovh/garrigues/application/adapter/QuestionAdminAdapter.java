@@ -37,6 +37,7 @@ public class QuestionAdminAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -53,12 +54,13 @@ public class QuestionAdminAdapter extends BaseAdapter {
 
         Question q = question_list.get(position);
         holder.textQuestion.setText(q.getQuestion());
-        holder.textanswer.setText(String.valueOf(q.getNumberAnswer()));
+        holder.textanswer.setText(String.valueOf(q.getNumberAnswer()+1));
         holder.textnumberAnwer.setText(String.valueOf(q.getAnswerStr().length));
 
 
         return convertView;
     }
+
 
     private class ViewHolder {
         TextView textQuestion;

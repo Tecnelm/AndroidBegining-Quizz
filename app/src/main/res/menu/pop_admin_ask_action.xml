@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+
+<item android:title="Modify"
+    android:id="@+id/admin_ask_modify"
+    android:icon="@drawable/ic_admin_modify"
+    app:showAsAction="never"
+    />
+    <item android:title="Delete"
+        android:icon="@drawable/ic_admin_delete"
+        android:id="@+id/admin_ask_delete"
+        app:showAsAction="never"
+        />
+
+</menu>
