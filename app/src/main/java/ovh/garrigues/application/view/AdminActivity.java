@@ -120,7 +120,7 @@ public class AdminActivity extends ActivityRequest {
                                 switch (item.getItemId()) {
                                     case R.id.admin_ask_delete : deleteQuestion(questionClick);break;
 
-                                    case R.id.admin_ask_modify : modifyQuestion(questionClick);break;
+                                    case R.id.admin_ask_modify :modifyQuestion();break;
 
                                 }
                                 return false;
@@ -145,7 +145,13 @@ public class AdminActivity extends ActivityRequest {
 
     }
 
-    private void modifyQuestion(Question questionClick) {
+    private void modifyQuestionRequest(Question[] questionModify) {
+
+        new Request(getApplicationContext(),VolleySingleton.getInstance(getApplicationContext()).getRequestQueue()).modifyQuestion(this,questionModify);
+    }
+    private void modifyQuestion()
+    {
+
     }
 
     private void deleteQuestion(Question questionClick) {
