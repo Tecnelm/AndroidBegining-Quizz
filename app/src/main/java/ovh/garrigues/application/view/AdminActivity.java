@@ -96,6 +96,8 @@ public class AdminActivity extends ActivityRequest {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                    final Question questionClick = (Question) ((QuestionAdminAdapter)parent.getAdapter()).getItem(position);
+
+                   final Question  questionOld = (Question) ((QuestionAdminAdapter)parent.getAdapter()).getItem(position+1);
                     PopupMenu popup = new PopupMenu(getApplicationContext(), view);
                         try {
                             Field[] fields = popup.getClass().getDeclaredFields();
@@ -120,7 +122,7 @@ public class AdminActivity extends ActivityRequest {
                                 switch (item.getItemId()) {
                                     case R.id.admin_ask_delete : deleteQuestion(questionClick);break;
 
-                                    case R.id.admin_ask_modify :modifyQuestion();break;
+                                    case R.id.admin_ask_modify :modifyQuestion(questionClick,questionOld);break;
 
                                 }
                                 return false;
@@ -149,9 +151,10 @@ public class AdminActivity extends ActivityRequest {
 
         new Request(getApplicationContext(),VolleySingleton.getInstance(getApplicationContext()).getRequestQueue()).modifyQuestion(this,questionModify);
     }
-    private void modifyQuestion()
+    private void modifyQuestion(Question New,Question old)
     {
-
+        Question [] questionsL = {old ,New};
+        modifyQuestionRequest(questionsL);
     }
 
     private void deleteQuestion(Question questionClick) {
