@@ -7,7 +7,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
@@ -59,11 +58,12 @@ public class Request {
     {
         final ActivityRequest act  = ac;
         Gson gson = new Gson();
-       final String encodedpost = gson.toJson(question);
+        final String encodedpost = gson.toJson(question);
         StringRequest request = new StringRequest(StringRequest.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-              String res = response.substring(1);
+                String res = response.substring(1);
+
                 if (res.equals("OK"))
                 {
 
@@ -85,8 +85,9 @@ public class Request {
 
             @Override
             public byte[] getBody() throws AuthFailureError {
+                String str = "Delete"+encodedpost;
                 try {
-                    return encodedpost.getBytes("utf-8");
+                    return str.getBytes("utf-8");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -95,6 +96,53 @@ public class Request {
         };
         requestQueue.add(request);
     }
+    public void modifyQuestion(ActivityRequest ac, final Question[] questionlist)
+    {
+        final ActivityRequest act  = ac;
+        if (questionlist.length != 2){
+            Gson gson = new Gson();
+            final String encodedpost = gson.toJson(questionlist);
+            StringRequest request = new StringRequest(StringRequest.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String res = response.substring(1);
+
+                    if (res.equals("OK"))
+                    {
+
+                        act.changeActiSucessPost();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }
+            ){
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    String str = "Modify"+encodedpost;
+                    try {
+                        return str.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+            requestQueue.add(request);
+
+
+        }
+    }
+
 
     public ArrayList<Question> getQuestion() {
 
