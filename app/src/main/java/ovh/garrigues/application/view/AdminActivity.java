@@ -1,15 +1,9 @@
 package ovh.garrigues.application.view;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuPopupHelper;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,14 +17,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import ovh.garrigues.application.R;
+import ovh.garrigues.application.adapter.ActivityRequest;
 import ovh.garrigues.application.adapter.QuestionAdminAdapter;
-import ovh.garrigues.application.adapter.activityRequest;
-import ovh.garrigues.application.question.Player;
 import ovh.garrigues.application.question.Question;
 import ovh.garrigues.application.request.Request;
 import ovh.garrigues.application.request.VolleySingleton;
 
-public class AdminActivity extends activityRequest {
+public class AdminActivity extends ActivityRequest {
 
     private AdminActivity instance;
     @Override
@@ -41,6 +34,11 @@ public class AdminActivity extends activityRequest {
         refresh();
 
 
+    }
+
+    @Override
+    public void changeActiSucessPost() {
+        this.refresh();
     }
 
     @Override
@@ -86,48 +84,75 @@ public class AdminActivity extends activityRequest {
     }
 
     @Override
-    public void changeActiSucess() {
+    public synchronized void changeActiSucess() {
         ArrayList<Question> questionlist = Request.getInstance().getQuestion();
-        ListView view = this.findViewById(R.id.recyclerAdmin);
-        QuestionAdminAdapter questionAdminAdapter = new QuestionAdminAdapter(this,questionlist);
-        view.setAdapter(questionAdminAdapter);
+        if (questionlist != null){
+            ListView view = this.findViewById(R.id.recyclerAdmin);
+            QuestionAdminAdapter questionAdminAdapter = new QuestionAdminAdapter(this,questionlist);
+            view.setAdapter(questionAdminAdapter);
 
-        view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                //Question questionClick = (Question) ((QuestionAdminAdapter)parent.getAdapter()).getItem(position);
-                PopupMenu popup = new PopupMenu(getApplicationContext(), view);
+            view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                   final Question questionClick = (Question) ((QuestionAdminAdapter)parent.getAdapter()).getItem(position);
+                    PopupMenu popup = new PopupMenu(getApplicationContext(), view);
+                        try {
+                            Field[] fields = popup.getClass().getDeclaredFields();
+                            for (Field field : fields) {
+                                if ("mPopup".equals(field.getName())) {
+                                    field.setAccessible(true);
+                                    Object menuPopupHelper = field.get(popup);
+                                    Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                                    Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                                    setForceIcons.invoke(menuPopupHelper, true);
 
-                /*  The below code in try catch is responsible to display icons*/
-                try {
-                    Field[] fields = popup.getClass().getDeclaredFields();
-                    for (Field field : fields) {
-                        if ("mPopup".equals(field.getName())) {
-                            field.setAccessible(true);
-                            Object menuPopupHelper = field.get(popup);
-                            Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
-                            Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
-                            setForceIcons.invoke(menuPopupHelper, true);
-                            popup.getMenuInflater().inflate(R.menu.pop_admin_ask_action,popup.getMenu());
-                            popup.show();
-                            break;
+                                    break;
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    popup.getMenuInflater().inflate(R.menu.pop_admin_ask_action,popup.getMenu());
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                switch (item.getItemId()) {
+                                    case R.id.admin_ask_delete : deleteQuestion(questionClick);break;
+
+                                    case R.id.admin_ask_modify : modifyQuestion(questionClick);break;
+
+                                }
+                                return false;
+
+                            }
+                        });
+                    popup.show();
+
+
+
+                /*  The below code in try catch is responsible to display icons
+                */
+
+
+                    return false;
                 }
+            });
 
+        }
 
-
-                return false;
-            }
-        });
 
 
     }
 
+    private void modifyQuestion(Question questionClick) {
+    }
+
+    private void deleteQuestion(Question questionClick) {
+        new Request(getApplicationContext(),VolleySingleton.getInstance(getApplicationContext()).getRequestQueue()).deleteQuestion(this,questionClick);
+    }
+
     @Override
-    public activityRequest getInstance() {
+    public ActivityRequest getInstance() {
         return instance;
     }
 

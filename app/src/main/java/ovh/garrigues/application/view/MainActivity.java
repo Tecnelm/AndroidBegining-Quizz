@@ -1,6 +1,5 @@
 package ovh.garrigues.application.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -28,14 +26,14 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import ovh.garrigues.application.adapter.DynamicView;
-import ovh.garrigues.application.adapter.activityRequest;
-import ovh.garrigues.application.question.Player;
 import ovh.garrigues.application.R;
+import ovh.garrigues.application.adapter.ActivityRequest;
+import ovh.garrigues.application.adapter.DynamicView;
+import ovh.garrigues.application.question.Player;
 import ovh.garrigues.application.request.Request;
 import ovh.garrigues.application.request.VolleySingleton;
 
-public class MainActivity extends activityRequest {
+public class MainActivity extends ActivityRequest {
     private TextView mText;
     private Button mButton;
     private EditText mEdit;
@@ -53,6 +51,11 @@ public class MainActivity extends activityRequest {
     private static String SAVE_DATA_LIST_KEY = "DATA_LIST_PLAYER";
     private static Player last_player;
 
+
+    @Override
+    public void changeActiSucessPost() {
+
+    }
 
     public MainActivity getInstance() {
         return instance;
