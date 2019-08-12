@@ -39,6 +39,7 @@ public class AdminActivity extends ActivityRequest {
     @Override
     public void changeActiSucessPost() {
         this.refresh();
+        Toast.makeText(getApplicationContext(),"Question successful delete",Toast.LENGTH_SHORT).show();
     }
 
     @Override
