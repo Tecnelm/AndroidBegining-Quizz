@@ -98,6 +98,7 @@ public class AdminActivity extends ActivityRequest {
                    final Question questionClick = (Question) ((QuestionAdminAdapter)parent.getAdapter()).getItem(position);
 
                    final Question  questionOld = (Question) ((QuestionAdminAdapter)parent.getAdapter()).getItem(position+1);
+
                     PopupMenu popup = new PopupMenu(getApplicationContext(), view);
                         try {
                             Field[] fields = popup.getClass().getDeclaredFields();

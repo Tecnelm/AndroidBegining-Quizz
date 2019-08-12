@@ -99,7 +99,7 @@ public class Request {
     public void modifyQuestion(ActivityRequest ac, final Question[] questionlist)
     {
         final ActivityRequest act  = ac;
-        if (questionlist.length != 2){
+        if (questionlist.length == 2){
             Gson gson = new Gson();
             final String encodedpost = gson.toJson(questionlist);
             StringRequest request = new StringRequest(StringRequest.Method.POST, url, new Response.Listener<String>() {
@@ -138,8 +138,6 @@ public class Request {
                 }
             };
             requestQueue.add(request);
-
-
         }
     }
 
