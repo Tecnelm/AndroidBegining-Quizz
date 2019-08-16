@@ -9,5 +9,6 @@
     <string name="title_activity_admin">adminActivity</string>
     <string name="Admin_add">Ajouter</string>
     <string name="AdminviewRefresh">refresh</string>
+    <string name="RemoveAll">Suprimer Tout</string>
 
 </resources>

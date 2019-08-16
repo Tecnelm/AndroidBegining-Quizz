@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ModifyAdminActivity"
+    tools:context=".question.AdminMoodifyPopupWindow"
     android:theme="@style/AppTheme.NoActionBar"
     >
 
@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:padding="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.016"
@@ -42,6 +43,7 @@
                 android:layout_gravity="right"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="4dp"
+                android:padding="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.984"
@@ -49,8 +51,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/ic_admin_modify_chek"
-                />
+                app:srcCompat="@drawable/ic_admin_modify_chek" />
         </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
@@ -82,13 +83,29 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_weight="1"
-            android:id="@+id/ModifyAdminListAnswer">
-
-            <android.support.v7.widget.AppCompatImageView
+            >
+            <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@mipmap/ic_launcher" />
+                android:id="@+id/ModifyAdminListAnswer"></ListView>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/modifyAdminActivityAddAnswer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/button" />
+        </LinearLayout>
+
+
     </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>

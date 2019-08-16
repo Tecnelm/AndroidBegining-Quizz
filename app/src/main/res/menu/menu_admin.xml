@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/admin_delAll"
+        android:title="@string/RemoveAll"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_admin_delall"
+
+        />
+    <item
         android:id="@+id/adminViewRefresh"
         android:title="@string/AdminviewRefresh"
         app:showAsAction="always"
@@ -14,5 +21,6 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_admin_add"
         />
+
 
 </menu>

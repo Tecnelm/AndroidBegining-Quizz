@@ -57,19 +57,17 @@ public class QuestionAdminAdapter extends BaseAdapter {
             holder.textanswer = convertView.findViewById(R.id.correctanswerText);
             holder.textnumberAnwer = convertView.findViewById(R.id.numberAnswertext);
             holder.textQuestion = convertView.findViewById(R.id.questionTagText);
+            convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        try{
+
             Question q = question_list.get(position);
             holder.textanswer.setText(String.valueOf(q.getNumberAnswer()+1));
             holder.textQuestion.setText(q.getQuestion());
-             holder.textnumberAnwer.setText(String.valueOf(q.getAnswerStr().length));
-        }catch (Exception e)
-        {
+            holder.textnumberAnwer.setText(String.valueOf(q.getAnswerStr().length));
 
-        }
 
 
         return convertView;
