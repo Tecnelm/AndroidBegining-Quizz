@@ -1,9 +1,11 @@
 package ovh.garrigues.application.adapter;
 
 import android.content.Context;
+import android.support.v7.recyclerview.extensions.ListAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ public class QuestionAdminAdapter extends BaseAdapter {
     private LayoutInflater inflater;
 
     public QuestionAdminAdapter(Context context, ArrayList<Question> question_list) {
+
         this.question_list = question_list;
         this.inflater = LayoutInflater.from(context);
 
@@ -25,6 +28,12 @@ public class QuestionAdminAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         return question_list.size();
+    }
+
+    public void resetView()
+    {
+        question_list.clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -52,10 +61,15 @@ public class QuestionAdminAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Question q = question_list.get(position);
-        holder.textQuestion.setText(q.getQuestion());
-        holder.textanswer.setText(String.valueOf(q.getNumberAnswer()+1));
-        holder.textnumberAnwer.setText(String.valueOf(q.getAnswerStr().length));
+        try{
+            Question q = question_list.get(position);
+            holder.textanswer.setText(String.valueOf(q.getNumberAnswer()+1));
+            holder.textQuestion.setText(q.getQuestion());
+             holder.textnumberAnwer.setText(String.valueOf(q.getAnswerStr().length));
+        }catch (Exception e)
+        {
+
+        }
 
 
         return convertView;

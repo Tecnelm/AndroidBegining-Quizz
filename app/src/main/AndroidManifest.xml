@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".adapter.Question_Admin_lay"></activity>
+        <activity android:name=".view.ModifyAdminActivity"></activity>
         <activity android:name=".view.CreateQuestionActivity" />
         <activity android:name=".view.AdminActivity" />
         <activity
