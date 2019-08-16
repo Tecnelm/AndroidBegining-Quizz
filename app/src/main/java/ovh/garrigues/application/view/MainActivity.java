@@ -52,11 +52,6 @@ public class MainActivity extends ActivityRequest {
     private static Player last_player;
 
 
-    @Override
-    public void changeActiSucessPost() {
-
-    }
-
     public MainActivity getInstance() {
         return instance;
     }
@@ -160,7 +155,8 @@ public class MainActivity extends ActivityRequest {
         });
     }
 
-    public void changeActiSucess() {
+    @Override
+    public void changeActiSucess(Request.EditTypeQuestion typeRequest) {
         Player p = new Player(mEdit.getText().toString());
         Intent gameActivity = new Intent(MainActivity.this, QuizActivity.class);
         gameActivity.putExtra(PLAYER_STRING, gson.toJson(p));
@@ -168,10 +164,15 @@ public class MainActivity extends ActivityRequest {
         startActivityForResult(gameActivity, QUIZ_ACTIVITY_REQUEST_Code);
 
     }
-
-    public void changeActiError() {
+    @Override
+    public void changeActiError(Request.EditTypeQuestion typeRequest) {
+        switch (typeRequest)
+        {
+            case NO_QUESTION_GET:Toast.makeText(getApplicationContext(), typeRequest.abv, Toast.LENGTH_SHORT).show();break;
+            case GET_QUESTION:Toast.makeText(getApplicationContext(), "Error getting Question", Toast.LENGTH_SHORT).show();break;
+        }
         mProgressBar.setVisibility(View.GONE);
-        Toast.makeText(getApplicationContext(), "Error getting Question", Toast.LENGTH_SHORT).show();
+
     }
 
     private void addPlayer(Player p) {

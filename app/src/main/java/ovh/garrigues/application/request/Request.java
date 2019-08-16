@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import ovh.garrigues.application.adapter.ActivityRequest;
@@ -21,11 +21,11 @@ import ovh.garrigues.application.question.Question;
 
 public class Request {
 
+    private static Request instance;
+    private final String url = "http://garrigues.ovh";
     private Context context;
     private RequestQueue requestQueue;
-    private final String url = "http://garrigues.ovh";
     private ArrayList<Question> questiontab;
-    private static Request instance;
 
     public Request(Context context, RequestQueue requestQueue) {
         this.context = context;
@@ -44,30 +44,30 @@ public class Request {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                parseQuestionGet(act,response);
+                parseQuestionGet(act, response, EditTypeQuestion.GET_QUESTION);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                act.getInstance().changeActiError();
+                act.getInstance().changeActiError(EditTypeQuestion.GET_QUESTION);
             }
         });
         requestQueue.add(jsonArrayRequest);
     }
-    public void deleteQuestion(ActivityRequest ac, final Question question)
-    {
-        final ActivityRequest act  = ac;
+
+    public void QuestionRequestEdit(ActivityRequest ac, final EditTypeQuestion typeRequest, String content) {
+        final ActivityRequest act = ac;
+
         Gson gson = new Gson();
-        final String encodedpost = gson.toJson(question);
+        final String encodedpost = content;
         StringRequest request = new StringRequest(StringRequest.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 String res = response.substring(1);
 
-                if (res.equals("OK"))
-                {
+                if (res.equals("OK")) {
 
-                    act.changeActiSucessPost();
+                    act.changeActiSucess(typeRequest);
                 }
 
             }
@@ -77,7 +77,7 @@ public class Request {
 
             }
         }
-        ){
+        ) {
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf8";
@@ -85,62 +85,12 @@ public class Request {
 
             @Override
             public byte[] getBody() throws AuthFailureError {
-                String str = "Delete"+encodedpost;
-                try {
-                    return str.getBytes("utf-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                String str = typeRequest.abv + encodedpost;
+                return str.getBytes(StandardCharsets.UTF_8);
             }
         };
         requestQueue.add(request);
     }
-    public void modifyQuestion(ActivityRequest ac, final Question[] questionlist)
-    {
-        final ActivityRequest act  = ac;
-        if (questionlist.length == 2){
-            Gson gson = new Gson();
-            final String encodedpost = gson.toJson(questionlist);
-            StringRequest request = new StringRequest(StringRequest.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    String res = response.substring(1);
-
-                    if (res.equals("OK"))
-                    {
-
-                        act.changeActiSucessPost();
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            }
-            ){
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    String str = "Modify"+encodedpost;
-                    try {
-                        return str.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-            };
-            requestQueue.add(request);
-        }
-    }
-
 
     public ArrayList<Question> getQuestion() {
 
@@ -150,7 +100,8 @@ public class Request {
     public void resetQuestion() {
         questiontab = null;
     }
-    private void parseQuestionGet(ActivityRequest act,JSONArray response){
+
+    private void parseQuestionGet(ActivityRequest act, JSONArray response, EditTypeQuestion typeRequest) {
         Gson gson = new Gson();
         questiontab = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
@@ -167,10 +118,22 @@ public class Request {
         }
 
         if (questiontab.size() == 0)
-            act.changeActiError();
+            act.changeActiError(EditTypeQuestion.NO_QUESTION_GET);
         else
-            act.getInstance().changeActiSucess();
+            act.getInstance().changeActiSucess(typeRequest);
 
+    }
+
+    public enum EditTypeQuestion {
+        DELETE("Delete"), ADD("add   "), MODIFY("Modify"), GET_QUESTION(null),
+
+        QUESTION_GET_SUCC("successful getting Question"), NO_QUESTION_GET("No Question Available");
+
+        public String abv;
+
+        EditTypeQuestion(String abv) {
+            this.abv = abv;
+        }
     }
 
 }
