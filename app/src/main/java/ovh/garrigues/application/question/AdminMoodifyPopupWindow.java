@@ -86,16 +86,14 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
                 int in = adapter.getCheckBoxGroup().getChekedPosition();
                 boolean b1 = !question.getQuestion().equals(String.valueOf(mtextQuestion.getText()));
                 boolean b2 = question.getNumberAnswer() != adapter.getCheckBoxGroup().getChekedPosition();
+                boolean b3 = !question.getAnswerStr().equals(adapter.getStringsAnswer());
+                if (b1 || b2 || b3) {
 
-                if (b1 || b2) {
-                    if (question.getAnswerStr().equals(adapter.getStringsAnswer())) {
                         newQuestion = new Question(String.valueOf(mtextQuestion.getText()), adapter.getCheckBoxGroup().getChekedPosition(), adapter.getStringsAnswer());
                         if (!newQuestion.isError()) {
                             Question[] questions = {question, newQuestion};
                             ac.modifyQuestion(questions);
                         }
-
-                    }
                 }
                 AdminMoodifyPopupWindow.this.dismiss();
             }
