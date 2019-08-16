@@ -1,33 +1,39 @@
 package ovh.garrigues.application.question;
 
-import android.content.Context;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-
-import com.google.gson.annotations.Expose;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Question {
 
     private String question;
     private int numberAnswer;// between 0.3
-    private String answerStr[];
+    private String[] answerStr;
 
     private transient boolean error = false;
 
+    public ArrayList<String> getArraylistanswer() {
+        if (arraylistanswer == null)
+            arraylistanswer = new ArrayList<String>(Arrays.asList(answerStr));
+        return arraylistanswer;
+
+    }
+
+    private  transient ArrayList<String> arraylistanswer;
+
     public Question(String question, int answer, String[] answerStr) {
         this.question = question;
-        this.numberAnswer = answer - 1;
+        this.numberAnswer = answer + 1;
         this.answerStr = answerStr;
-        if (numberAnswer >= answerStr.length || numberAnswer < 0) {
+        if (numberAnswer > answerStr.length || numberAnswer <= 0) {
             for (int i = 0; i < answerStr.length; i++) {
                 answerStr[i] = "ERROR";
             }
             numberAnswer = 1;
             this.question = "ERROR";
+
             error = true;
+
         }
     }
 

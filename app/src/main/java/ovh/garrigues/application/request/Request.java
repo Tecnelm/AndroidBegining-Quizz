@@ -127,7 +127,8 @@ public class Request {
     public enum EditTypeQuestion {
         DELETE("Delete"), ADD("add   "), MODIFY("Modify"), GET_QUESTION(null),
 
-        QUESTION_GET_SUCC("successful getting Question"), NO_QUESTION_GET("No Question Available");
+        QUESTION_GET_SUCC("successful getting Question"), NO_QUESTION_GET("No Question Available"),
+        DELALL("DelALL");
 
         public String abv;
 
