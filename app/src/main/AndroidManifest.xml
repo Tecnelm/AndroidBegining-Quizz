@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustResize|stateHidden"
         android:usesCleartextTraffic="true">
-        <activity android:name=".question.AdminMoodifyPopupWindow"></activity>
         <activity android:name=".view.CreateQuestionActivity" />
         <activity android:name=".view.AdminActivity" />
         <activity

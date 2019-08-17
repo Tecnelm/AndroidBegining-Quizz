@@ -3,10 +3,12 @@ package ovh.garrigues.application.question;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
+import android.view.WindowManager;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -25,6 +27,7 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
     private Context context;
     private QuestionAdminModifyAdapter adapter;
     private ImageView mImageButton;
+
 
     public AdminMoodifyPopupWindow(Context context) {
         super(context);
@@ -56,6 +59,8 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
     public AdminMoodifyPopupWindow(AdminActivity ac, View contentView, int width, int height, Question question) {
         super(contentView, width, height);
         this.context = ac.getApplicationContext();
+        setFocusable(true);
+        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         initPopupButton(contentView, ac);
         setQuestion(question);
     }
@@ -70,11 +75,14 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
         mListView = contentView.findViewById(R.id.ModifyAdminListAnswer);
         mtextQuestion = contentView.findViewById(R.id.ModifyAdminTextQuestion);
         mImageButton = contentView.findViewById(R.id.modifyAdminActivityAddAnswer);
+        mtextQuestion.setShowSoftInputOnFocus(true);
+
 
         this.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         mAboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                question.resetArraylistgetter();
                 AdminMoodifyPopupWindow.this.dismiss();
             }
         });
@@ -83,7 +91,6 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
             public void onClick(View v) {
                 Question newQuestion;
 
-                int in = adapter.getCheckBoxGroup().getChekedPosition();
                 boolean b1 = !question.getQuestion().equals(String.valueOf(mtextQuestion.getText()));
                 boolean b2 = question.getNumberAnswer() != adapter.getCheckBoxGroup().getChekedPosition();
                 boolean b3 = !question.getAnswerStr().equals(adapter.getStringsAnswer());
@@ -92,6 +99,7 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
                         newQuestion = new Question(String.valueOf(mtextQuestion.getText()), adapter.getCheckBoxGroup().getChekedPosition(), adapter.getStringsAnswer());
                         if (!newQuestion.isError()) {
                             Question[] questions = {question, newQuestion};
+                            question.resetArraylistgetter();
                             ac.modifyQuestion(questions);
                         }
                 }
@@ -113,7 +121,7 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
 
         this.question = q;
         if (q != null) {
-            QuestionAdminModifyAdapter adapter = new QuestionAdminModifyAdapter(context, q);
+            QuestionAdminModifyAdapter adapter = new QuestionAdminModifyAdapter(context, question);
             this.adapter = adapter;
             mListView.setAdapter(adapter);
             mtextQuestion.setText(q.getQuestion());

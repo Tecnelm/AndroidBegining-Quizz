@@ -11,12 +11,22 @@ public class Question {
     private String[] answerStr;
 
     private transient boolean error = false;
+    public Question()
+    {
+        question = "";
+        numberAnswer = -1;
+        answerStr=new String[0];
+    }
 
     public ArrayList<String> getArraylistanswer() {
         if (arraylistanswer == null)
             arraylistanswer = new ArrayList<String>(Arrays.asList(answerStr));
         return arraylistanswer;
 
+    }
+    public void resetArraylistgetter()
+    {
+        arraylistanswer = null;
     }
 
     private  transient ArrayList<String> arraylistanswer;
