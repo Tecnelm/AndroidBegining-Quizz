@@ -31,6 +31,7 @@ import ovh.garrigues.application.request.VolleySingleton;
 
 public class AdminActivity extends ActivityRequest {
 
+    private static AdminActivity intance;
     private AdminActivity instance;
     private Gson gson;
 
@@ -39,6 +40,7 @@ public class AdminActivity extends ActivityRequest {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         instance = this;
+        intance = this;
         refresh();
         gson = new Gson();
 
@@ -228,7 +230,7 @@ public class AdminActivity extends ActivityRequest {
         QuestionRequestEdit(Request.EditTypeQuestion.MODIFY, gson.toJson(questions));
     }
 
-    private void addQuestion(Question questionClick) {
+    public void addQuestion(Question questionClick) {
         QuestionRequestEdit(Request.EditTypeQuestion.ADD, gson.toJson(questionClick));
     }
 
@@ -238,9 +240,13 @@ public class AdminActivity extends ActivityRequest {
     }
 
 
+
     @Override
     public ActivityRequest getInstance() {
         return instance;
+    }
+    public static AdminActivity getIstance(){
+        return intance;
     }
 
 
