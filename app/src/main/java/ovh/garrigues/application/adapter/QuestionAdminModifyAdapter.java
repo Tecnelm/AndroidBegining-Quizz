@@ -21,43 +21,35 @@ import ovh.garrigues.application.question.CheckBoxGroup;
 import ovh.garrigues.application.question.CustomCheckBox;
 import ovh.garrigues.application.question.Question;
 
+/**
+ * This class is use during the creation and modification of quention
+ * this adapter adapte the answer into the view
+ */
 public class QuestionAdminModifyAdapter extends ArrayAdapter<Answer> {
 
     private Context context;
-    private String[] stringsAnswer;
-    private int correctAnswer;
     private LayoutInflater inflater;
     private CheckBoxGroup checkBoxGroup;
     private ArrayList<Answer> stringAnswer;
     private AppCompatActivity ac;
 
 
-
-
-    public QuestionAdminModifyAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public QuestionAdminModifyAdapter(Context context, Question q,AppCompatActivity ac) {
+    public QuestionAdminModifyAdapter(Context context, Question q, AppCompatActivity ac) {
         super(context, 0, q.convertAnswer());
-        stringsAnswer = q.getAnswerStr();
         stringAnswer = q.convertAnswer();
         this.ac = ac;
-        correctAnswer = q.getNumberAnswer();
         this.context = context;
         inflater = LayoutInflater.from(context);
         q.resetArray();
-        checkBoxGroup = new CheckBoxGroup(stringAnswer ,this);
+        checkBoxGroup = new CheckBoxGroup(stringAnswer, this);
     }
 
-    public QuestionAdminModifyAdapter(Context context, ArrayList<Answer> arrayList,AppCompatActivity ac) {
+    public QuestionAdminModifyAdapter(Context context, ArrayList<Answer> arrayList, AppCompatActivity ac) {
         super(context, 0, arrayList);
         this.ac = ac;
         this.context = context;
         inflater = LayoutInflater.from(context);
-        checkBoxGroup = new CheckBoxGroup(arrayList,this);
-        stringsAnswer = new String[0];
-
+        checkBoxGroup = new CheckBoxGroup(arrayList, this);
         stringAnswer = arrayList;
     }
 
@@ -68,8 +60,7 @@ public class QuestionAdminModifyAdapter extends ArrayAdapter<Answer> {
 
     public String[] getStringsAnswer() {
         String[] answer = new String[stringAnswer.size()];
-        for (int i = 0 ; i < stringAnswer.size(); i++)
-        {
+        for (int i = 0; i < stringAnswer.size(); i++) {
             answer[i] = stringAnswer.get(i).toString();
         }
         return answer;
@@ -145,7 +136,7 @@ public class QuestionAdminModifyAdapter extends ArrayAdapter<Answer> {
                 AlertDialogBuilderModifyAnswer builder = new AlertDialogBuilderModifyAnswer(ac, holder.mTextAnswer,
                         view,
                         getItem(position)
-                        );
+                );
                 builder.getDialog().show();
 
 
