@@ -10,6 +10,8 @@ public class Question {
     private int numberAnswer;// between 0.3
     private String[] answerStr;
 
+
+    private transient ArrayList<Answer> ansArray;
     private transient boolean error = false;
     public Question()
     {
@@ -82,6 +84,21 @@ public class Question {
 
         }
         return valid;
+    }
+    public ArrayList<Answer>convertAnswer()
+    {
+        if (ansArray == null)
+        {
+            ansArray= new ArrayList<Answer>();
+            for(int i = 0 ; i<answerStr.length ; i++)
+            {
+                ansArray.add(new Answer(answerStr[i],i==getNumberAnswer()));
+            }
+        }
+        return ansArray;
+    }
+    public void resetArray(){
+        ansArray = null;
     }
 
 

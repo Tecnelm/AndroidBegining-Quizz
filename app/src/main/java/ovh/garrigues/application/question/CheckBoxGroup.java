@@ -2,49 +2,62 @@ package ovh.garrigues.application.question;
 
 import android.graphics.Color;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public class CheckBoxGroup<clearCheck> {
+public class CheckBoxGroup {
 
-    private ArrayList<CheckBox> checkBoxes;
-    private  CompoundButton.OnCheckedChangeListener clickListener;
-    public CheckBoxGroup() {
-        checkBoxes = new ArrayList<CheckBox>();
-        clickListener = new CompoundButton.OnCheckedChangeListener() {
+    private ArrayList<CustomCheckBox> checkBoxes;
+    private ArrayList<Answer> answers;
+    private ArrayAdapter<Answer> adapter;
+    private  CompoundButton.OnClickListener clickListener;
+    public CheckBoxGroup(ArrayList<Answer> ans, final ArrayAdapter<Answer> adapter) {
+        checkBoxes = new ArrayList<>();
+        this.adapter = adapter;
+        this.answers = ans;
+        clickListener = new CompoundButton.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                    clearCheck((CheckBox)buttonView);
+            public void onClick(View v) {
+                CustomCheckBox box = (CustomCheckBox) v;
+                clearCheck();
+                box.setChecked(true);
+                adapter.getItem(box.getId()).setCorrect(true);
             }
         };
 
     }
 
-    public void add(CheckBox box)
+    public void add(CustomCheckBox box)
     {
         checkBoxes.add(box);
-        box.setOnCheckedChangeListener(clickListener);
+        box.setOnClickListener(clickListener);
     }
-    public void remove(CheckBox box)
+    public void remove(CustomCheckBox box)
     {
         checkBoxes.remove(box);
     }
 
-    private void clearCheck( final CheckBox bb)
+    private void clearCheck()
     {
-        checkBoxes.forEach(new Consumer<CheckBox>() {
+        answers.forEach(new Consumer<Answer>() {
             @Override
-            public void accept(CheckBox box) {
-                if(box != bb)
-                    box.setChecked(false);
+            public void accept(Answer answer) {
+                answer.setCorrect(false);
+
             }
         });
+        for (int i = 0 ; i <checkBoxes.size() ; i ++)
+        {
+            checkBoxes.get(i).setChecked(false);
+        }
+        adapter.notifyDataSetChanged();
     }
-    public CheckBox get(int position)
+    public CustomCheckBox get(int position)
     {
         try
         {
@@ -66,9 +79,9 @@ public class CheckBoxGroup<clearCheck> {
     {
         try
         {
-            for (int i = 0 ; i<checkBoxes.size();i++)
+            for (int i = 0 ; i<answers.size();i++)
             {
-                if(isChecked(i)) return i;
+                if(answers.get(i).rightAnswer) return i;
             }
         }catch (ArrayIndexOutOfBoundsException e){
             e.printStackTrace();

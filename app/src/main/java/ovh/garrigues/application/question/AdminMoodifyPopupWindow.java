@@ -3,12 +3,9 @@ package ovh.garrigues.application.question;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -27,6 +24,7 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
     private Context context;
     private QuestionAdminModifyAdapter adapter;
     private ImageView mImageButton;
+
 
 
     public AdminMoodifyPopupWindow(Context context) {
@@ -96,7 +94,10 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
                 boolean b3 = !question.getAnswerStr().equals(adapter.getStringsAnswer());
                 if (b1 || b2 || b3) {
 
-                        newQuestion = new Question(String.valueOf(mtextQuestion.getText()), adapter.getCheckBoxGroup().getChekedPosition(), adapter.getStringsAnswer());
+                        newQuestion = new Question(String.valueOf(mtextQuestion.getText()),
+                                adapter.getCheckBoxGroup().getChekedPosition(),
+                                adapter.getStringsAnswer());
+
                         if (!newQuestion.isError()) {
                             Question[] questions = {question, newQuestion};
                             question.resetArraylistgetter();
@@ -111,7 +112,7 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String str = "";
-                adapter.add(str);
+                adapter.add(new Answer("",false));
                 adapter.notifyDataSetChanged();
             }
         });

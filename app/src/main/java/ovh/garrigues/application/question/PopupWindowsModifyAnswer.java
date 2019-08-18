@@ -18,15 +18,15 @@ public class PopupWindowsModifyAnswer extends PopupWindow {
     private ImageButton mValidButton;
     private EditText mEditText;
     private Context context;
-    private ArrayList<String> adapter;
+    private Answer ans ;
     private int position;
 
 
-    public PopupWindowsModifyAnswer(Context context, TextView text, View contentView, ArrayList<String> adapter, int position, int width, int height) {
+
+    public PopupWindowsModifyAnswer(Context context, TextView text, View contentView, Answer ans, int width, int height) {
         super(contentView, width, height);
         this.context = context;
-        this.adapter=adapter;
-        this.position = position;
+        this.ans=ans;
         initPopupButton(contentView, text);
     }
 
@@ -44,7 +44,7 @@ public class PopupWindowsModifyAnswer extends PopupWindow {
                 @Override
                 public void onClick(View v) {
                     textView.setText(mEditText.getText());
-                    adapter.set(position,String.valueOf(mEditText.getText()));
+                    ans.setText(String.valueOf(mEditText.getText()));
                     dismiss();
 
                 }

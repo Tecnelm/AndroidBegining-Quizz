@@ -35,7 +35,7 @@
             android:layout_weight="6"
             android:background="@color/colorPrimaryDark">
 
-            <CheckBox
+            <ovh.garrigues.application.question.CustomCheckBox
                 android:id="@+id/ModifyQuestionListAnswerCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

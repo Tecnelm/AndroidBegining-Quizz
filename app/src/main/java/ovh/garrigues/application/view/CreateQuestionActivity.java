@@ -18,6 +18,7 @@ import ovh.garrigues.application.R;
 import ovh.garrigues.application.adapter.ActivityRequest;
 import ovh.garrigues.application.adapter.QuestionAdminModifyAdapter;
 import ovh.garrigues.application.question.AdminMoodifyPopupWindow;
+import ovh.garrigues.application.question.Answer;
 import ovh.garrigues.application.question.Question;
 
 public class CreateQuestionActivity extends AppCompatActivity {
@@ -43,7 +44,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
         mListView = findViewById(R.id.ModifyAdminListAnswer);
         mtextQuestion = findViewById(R.id.ModifyAdminTextQuestion);
         mImageButton = findViewById(R.id.modifyAdminActivityAddAnswer);
-        adapter = new QuestionAdminModifyAdapter(this,new ArrayList<String>());
+        adapter = new QuestionAdminModifyAdapter(this,new ArrayList<Answer>());
         mListView.setAdapter(adapter);
 
         mAboardButton.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +81,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String str = "";
-                adapter.add(str);
+                adapter.add(new Answer("",false));
                 adapter.notifyDataSetChanged();
             }
         });

@@ -1,23 +1,12 @@
 package ovh.garrigues.application.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AlertDialog;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.Layout;
-import android.text.method.KeyListener;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -26,43 +15,49 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import ovh.garrigues.application.R;
-import ovh.garrigues.application.question.AdminMoodifyPopupWindow;
+import ovh.garrigues.application.question.Answer;
 import ovh.garrigues.application.question.CheckBoxGroup;
+import ovh.garrigues.application.question.CustomCheckBox;
 import ovh.garrigues.application.question.PopupWindowsModifyAnswer;
 import ovh.garrigues.application.question.Question;
 
-public class QuestionAdminModifyAdapter extends ArrayAdapter<String> {
+public class QuestionAdminModifyAdapter extends ArrayAdapter<Answer> {
 
     private Context context;
     private String[] stringsAnswer;
     private int correctAnswer;
     private LayoutInflater inflater;
     private CheckBoxGroup checkBoxGroup;
-    private ArrayList<String> stringAnswer;
+    private ArrayList<Answer> stringAnswer;
+
+
+
 
     public QuestionAdminModifyAdapter(Context context, int resource) {
         super(context, resource);
     }
 
     public QuestionAdminModifyAdapter(Context context, Question q) {
-        super(context, 0, q.getArraylistanswer());
+        super(context, 0, q.convertAnswer());
         stringsAnswer = q.getAnswerStr();
-        stringAnswer = q.getArraylistanswer();
+        stringAnswer = q.convertAnswer();
         correctAnswer = q.getNumberAnswer();
         this.context = context;
         inflater = LayoutInflater.from(context);
-        checkBoxGroup = new CheckBoxGroup();
+        q.resetArray();
+        checkBoxGroup = new CheckBoxGroup(stringAnswer ,this);
     }
-    public QuestionAdminModifyAdapter(Context context, ArrayList<String> arrayList) {
+
+    public QuestionAdminModifyAdapter(Context context, ArrayList<Answer> arrayList) {
         super(context, 0, arrayList);
 
         this.context = context;
         inflater = LayoutInflater.from(context);
-        checkBoxGroup = new CheckBoxGroup();
+        checkBoxGroup = new CheckBoxGroup(arrayList,this);
         stringsAnswer = new String[0];
+
         stringAnswer = arrayList;
     }
-
 
 
     public CheckBoxGroup getCheckBoxGroup() {
@@ -70,7 +65,12 @@ public class QuestionAdminModifyAdapter extends ArrayAdapter<String> {
     }
 
     public String[] getStringsAnswer() {
-        return stringAnswer.toArray(stringsAnswer);
+        String[] answer = new String[stringAnswer.size()];
+        for (int i = 0 ; i < stringAnswer.size(); i++)
+        {
+            answer[i] = stringAnswer.get(i).toString();
+        }
+        return answer;
     }
 
     @Override
@@ -82,13 +82,17 @@ public class QuestionAdminModifyAdapter extends ArrayAdapter<String> {
             holder.mCheckBox = convertView.findViewById(R.id.ModifyQuestionListAnswerCheckBox);
             holder.mTextAnswer = convertView.findViewById(R.id.ModifyQuestionListAnswerText);
             checkBoxGroup.add(holder.mCheckBox);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (correctAnswer == position)
-            holder.mCheckBox.setChecked(true);
-        holder.mTextAnswer.setText(getItem(position));
+        holder.mCheckBox.setID(position);
+        if (getItem(position).rightAnswer)
+            holder.mCheckBox.setChecked(getItem(position).rightAnswer);
+        else
+            holder.mCheckBox.setChecked(false);
+        holder.mTextAnswer.setText(getItem(position).toString());
 
         holder.mTextAnswer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -136,10 +140,9 @@ public class QuestionAdminModifyAdapter extends ArrayAdapter<String> {
 
                 View view = inflater.inflate(R.layout.modify_answer_windows, null);
 
-                PopupWindowsModifyAnswer popupWindow = new PopupWindowsModifyAnswer(context,holder.mTextAnswer,
+                PopupWindowsModifyAnswer popupWindow = new PopupWindowsModifyAnswer(context, holder.mTextAnswer,
                         view,
-                        stringAnswer,
-                        position
+                        getItem(position)
                         , ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 popupWindow.setElevation(5.0f);
                 popupWindow.setFocusable(true);
@@ -149,13 +152,12 @@ public class QuestionAdminModifyAdapter extends ArrayAdapter<String> {
         });
 
 
-
         return convertView;
 
     }
 
     private class ViewHolder {
-        CheckBox mCheckBox;
+        CustomCheckBox mCheckBox;
         TextView mTextAnswer;
     }
 }
