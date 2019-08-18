@@ -11,10 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="adjustResize"
+        android:windowSoftInputMode="stateHidden|adjustPan"
+        android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".view.CreateQuestionActivity" />
-        <activity android:name=".view.AdminActivity" />
+        <activity android:name=".view.AdminActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".view.QuizActivity"
             android:screenOrientation="portrait" />

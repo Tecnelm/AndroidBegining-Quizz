@@ -3,6 +3,7 @@ package ovh.garrigues.application.question;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ovh.garrigues.application.R;
 import ovh.garrigues.application.adapter.QuestionAdminModifyAdapter;
@@ -24,6 +26,7 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
     private Context context;
     private QuestionAdminModifyAdapter adapter;
     private ImageView mImageButton;
+    private AppCompatActivity ac;
 
 
 
@@ -57,6 +60,7 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
     public AdminMoodifyPopupWindow(AdminActivity ac, View contentView, int width, int height, Question question) {
         super(contentView, width, height);
         this.context = ac.getApplicationContext();
+        this.ac=ac;
         setFocusable(true);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         initPopupButton(contentView, ac);
@@ -111,9 +115,18 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
         mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = "";
-                adapter.add(new Answer("",false));
-                adapter.notifyDataSetChanged();
+
+                if(adapter.getCount() <6)
+                {
+                    String str = "";
+                    adapter.add(new Answer(str,false));
+                    adapter.notifyDataSetChanged();
+
+                }
+                else
+                {
+                    Toast.makeText(context,"ERROR TOO MANY QUESTION",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -122,7 +135,7 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
 
         this.question = q;
         if (q != null) {
-            QuestionAdminModifyAdapter adapter = new QuestionAdminModifyAdapter(context, question);
+            QuestionAdminModifyAdapter adapter = new QuestionAdminModifyAdapter(context, question,ac);
             this.adapter = adapter;
             mListView.setAdapter(adapter);
             mtextQuestion.setText(q.getQuestion());

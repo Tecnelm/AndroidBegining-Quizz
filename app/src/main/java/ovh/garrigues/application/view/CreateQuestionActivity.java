@@ -44,7 +44,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
         mListView = findViewById(R.id.ModifyAdminListAnswer);
         mtextQuestion = findViewById(R.id.ModifyAdminTextQuestion);
         mImageButton = findViewById(R.id.modifyAdminActivityAddAnswer);
-        adapter = new QuestionAdminModifyAdapter(this,new ArrayList<Answer>());
+        adapter = new QuestionAdminModifyAdapter(this,new ArrayList<Answer>(),this);
         mListView.setAdapter(adapter);
 
         mAboardButton.setOnClickListener(new View.OnClickListener() {
@@ -80,9 +80,18 @@ public class CreateQuestionActivity extends AppCompatActivity {
         mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = "";
-                adapter.add(new Answer("",false));
-                adapter.notifyDataSetChanged();
+                if(adapter.getCount() <6)
+                {
+                    String str = "";
+                    adapter.add(new Answer(str,false));
+                    adapter.notifyDataSetChanged();
+
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"ERROR TOO MANY QUESTION",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
