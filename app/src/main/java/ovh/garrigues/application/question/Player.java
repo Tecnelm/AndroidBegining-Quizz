@@ -1,5 +1,6 @@
 package ovh.garrigues.application.question;
 
+
 public class Player {
     private String name;
     private int score = -1;

@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import ovh.garrigues.application.adapter.ActivityRequest;
 import ovh.garrigues.application.question.Question;
 
+/**
+ * this class regroup all the request possible
+ *
+ */
 public class Request {
 
     private static Request instance;
@@ -40,6 +44,7 @@ public class Request {
     }
 
     public void getQuestionArray(ActivityRequest ac) {
+        //request the question with a get request to the server the data are encoded in json format
         final ActivityRequest act = ac;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -49,6 +54,7 @@ public class Request {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                //set the error o the activity
                 act.getInstance().changeActiError(EditTypeQuestion.GET_QUESTION);
             }
         });
@@ -58,7 +64,6 @@ public class Request {
     public void QuestionRequestEdit(ActivityRequest ac, final EditTypeQuestion typeRequest, String content) {
         final ActivityRequest act = ac;
 
-        Gson gson = new Gson();
         final String encodedpost = content;
         StringRequest request = new StringRequest(StringRequest.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -84,7 +89,7 @@ public class Request {
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
+            public byte[] getBody()  {
                 String str = typeRequest.abv + encodedpost;
                 return str.getBytes(StandardCharsets.UTF_8);
             }
@@ -127,7 +132,7 @@ public class Request {
     public enum EditTypeQuestion {
         DELETE("Delete"), ADD("add   "), MODIFY("Modify"), GET_QUESTION(null),
 
-        QUESTION_GET_SUCC("successful getting Question"), NO_QUESTION_GET("No Question Available"),
+         NO_QUESTION_GET("No Question Available"),
         DELALL("DelALL");
 
         public String abv;

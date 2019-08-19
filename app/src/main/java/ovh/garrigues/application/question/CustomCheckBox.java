@@ -5,14 +5,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 
+/**
+ * custom checkbox use to get answer in the adapter
+ * this checkBox have an ID
+ */
 @SuppressLint("AppCompatCustomView")
 public class CustomCheckBox extends CheckBox{
     private int ID ;
-
-    public CustomCheckBox(Context context,int id) {
-        super(context);
-        this.ID = id;
-    }
 
     public CustomCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);

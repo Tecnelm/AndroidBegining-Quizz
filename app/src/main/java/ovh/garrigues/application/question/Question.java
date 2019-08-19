@@ -1,8 +1,6 @@
 package ovh.garrigues.application.question;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Question {
 
@@ -19,19 +17,6 @@ public class Question {
         numberAnswer = -1;
         answerStr=new String[0];
     }
-
-    public ArrayList<String> getArraylistanswer() {
-        if (arraylistanswer == null)
-            arraylistanswer = new ArrayList<String>(Arrays.asList(answerStr));
-        return arraylistanswer;
-
-    }
-    public void resetArraylistgetter()
-    {
-        arraylistanswer = null;
-    }
-
-    private  transient ArrayList<String> arraylistanswer;
 
     public Question(String question, int answer, String[] answerStr) {
         this.question = question;
@@ -73,23 +58,21 @@ public class Question {
     public boolean checkValidity() {
         boolean valid = true;
         if (numberAnswer > answerStr.length || numberAnswer <= 0) {
-            /*for(int i =0 ; i < answerStr.length ;i++)
-            {
-                answerStr[i] = "ERROR";
-            }
-            numberAnswer = 1;
-            this.question = "ERROR";
-            error = true;*/
             valid = false;
 
         }
         return valid;
     }
+
+    /**
+     * convert the array string answer into array list of answer for the  adapter
+     * @return
+     */
     public ArrayList<Answer>convertAnswer()
     {
         if (ansArray == null)
         {
-            ansArray= new ArrayList<Answer>();
+            ansArray= new ArrayList<>();
             for(int i = 0 ; i<answerStr.length ; i++)
             {
                 ansArray.add(new Answer(answerStr[i],i==getNumberAnswer()));

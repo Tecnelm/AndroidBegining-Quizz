@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -30,32 +29,6 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
 
 
 
-    public AdminMoodifyPopupWindow(Context context) {
-        super(context);
-    }
-
-    public AdminMoodifyPopupWindow(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public AdminMoodifyPopupWindow(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    public AdminMoodifyPopupWindow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public AdminMoodifyPopupWindow() {
-    }
-
-    public AdminMoodifyPopupWindow(View contentView) {
-        super(contentView);
-    }
-
-    public AdminMoodifyPopupWindow(int width, int height) {
-        super(width, height);
-    }
 
     public AdminMoodifyPopupWindow(AdminActivity ac, View contentView, int width, int height, Question question) {
         super(contentView, width, height);
@@ -67,9 +40,6 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
         setQuestion(question);
     }
 
-    public AdminMoodifyPopupWindow(View contentView, int width, int height, boolean focusable) {
-        super(contentView, width, height, focusable);
-    }
 
     private void initPopupButton(final View contentView, final AdminActivity ac) {
         mAboardButton = contentView.findViewById(R.id.ModifyAdminActivityBack);
@@ -84,7 +54,6 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
         mAboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                question.resetArraylistgetter();
                 AdminMoodifyPopupWindow.this.dismiss();
             }
         });
@@ -104,7 +73,6 @@ public class AdminMoodifyPopupWindow extends PopupWindow {
 
                         if (!newQuestion.isError()) {
                             Question[] questions = {question, newQuestion};
-                            question.resetArraylistgetter();
                             ac.modifyQuestion(questions);
                         }
                 }
