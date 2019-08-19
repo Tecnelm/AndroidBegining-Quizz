@@ -37,7 +37,7 @@ public class DynamicView {
     {
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f);
         int valueLTR =Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10, mContext.getResources().getDisplayMetrics()));
-        int valueB =Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,30, mContext.getResources().getDisplayMetrics()));
+        int valueB =Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10, mContext.getResources().getDisplayMetrics()));
         params.setMargins(valueLTR,valueLTR,valueLTR,valueB);
 
         Button b = create_Button(lay,params);
