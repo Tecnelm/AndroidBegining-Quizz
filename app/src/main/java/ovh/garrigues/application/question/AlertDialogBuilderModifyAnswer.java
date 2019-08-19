@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -45,6 +46,20 @@ public class AlertDialogBuilderModifyAnswer extends AlertDialog.Builder {
         mValidButton = content.findViewById(R.id.buttonImageValidnewAnswer);
         mEditText = content.findViewById(R.id.EditTextViewModifyAnswer);
 
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                mEditText.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputMethodManager inputMethodManager= (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputMethodManager.showSoftInput(mEditText, InputMethodManager.SHOW_IMPLICIT);
+
+                    }
+                });
+            }
+        });
+
         mEditText.setText(text.getText());
 
             mValidButton.setOnClickListener(new View.OnClickListener() {
@@ -56,9 +71,12 @@ public class AlertDialogBuilderModifyAnswer extends AlertDialog.Builder {
                 }
             });
 
+
     }
 
     public AlertDialog getDialog() {
+        mEditText.requestFocus();
+
         return dialog;
     }
 }
